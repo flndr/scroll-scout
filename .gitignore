@@ -1,6 +1,6 @@
-es
 cjs
-dist
 node_modules
 coverage
 *.log
+.idea
+.DS_Store

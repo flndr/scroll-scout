@@ -1,3 +1,20 @@
 {
-  "extends": "devine"
+  "extends": "devine",
+
+  "rules" : {
+    "quotes" : 0,
+    "space-in-parens": 0,
+    "indent": ["warn", 4],
+    "babel/object-curly-spacing" : ["warn" , "always" ],
+    "key-spacing" : 0,
+    "prefer-const" : 0,
+    "space-unary-ops" : 0,
+    "semi-spacing" : 0,
+    "keyword-spacing": 0
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "jasmine": true
+  }
 }

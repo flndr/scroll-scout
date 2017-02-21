@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="author" content="Thomas Flander"/>
+    <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1">
+    <title>lazy.load | flndr</title>
+    <link rel='stylesheet' type='text/css' href='index.css'>
+    <script type="text/javascript" src="dist/scrollScout.min.js"></script>
+    <script type="text/javascript" src="index.js"></script>
+    <style>
+
+        html,
+        body {
+            font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .wrap {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+
+        h1, code {
+            display: block;
+            margin: 10px;
+            padding: 20px;
+        }
+        h1 {
+            margin-top: 2em;
+        }
+
+        .jsDemoGridFast,
+        .jsDemoGrid {
+            width: 100%;
+            overflow: hidden;
+            clear: both;
+        }
+
+        .jsDemoGridMore .demoGridItem {
+            height: 40px;
+            margin: 10px;
+            padding: 20px;
+            background-color: #eee;
+            color: white;
+            transition: all 1.5s;
+        }
+
+        .jsDemoGrid .demoGridItem {
+            float: left;
+            height: 80px;
+            margin: 10px;
+            padding: 20px;
+            background-color: #eee;
+            color: white;
+            transition: all 1.5s;
+        }
+        .jsDemoGridFast .demoGridItem {
+            float: left;
+            height: 80px;
+            margin: 10px;
+            padding: 20px;
+            background-color: #eee;
+            color: white;
+        }
+        a {
+            clear: both;
+            display: block;
+            margin: 10px;
+            padding: 20px;
+            background: #000;
+            color: #eee;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .grey {
+            color: #7f7f7f;
+        }
+
+        .foot {
+            clear: both; margin: 50px 0 0 0; padding: 20px; text-align: center; border-top: 1px solid grey; font-size:11px; color: grey;
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+
+    <h1 class="grey">ScrollScout</h1>
+
+    <h1>Slow fade, threshold 0, load more</h1>
+<code><pre>
+forEach( document.querySelectorAll( '.jsDemoGridMore > div' ), function ( div ) {
+    window.ScrollScout.becomesVisible( div, 0 ).then( makeBlue );
+} );
+</pre></code>
+    <div class="jsDemoGridMore">
+        <a id="loadMore" href="#">load more</a>
+    </div>
+
+    <h1>Slow fade, threshold 0</h1>
+<code><pre>
+forEach( document.querySelectorAll( '.jsDemoGridMore > div' ), function ( div ) {
+    window.ScrollScout.becomesVisible( div, 0 ).then( makeGreen );
+} );
+</pre></code>
+    <div class="jsDemoGrid"></div>
+
+    <h1>No fade, threshold 100</h1>
+    <code><pre>
+forEach( document.querySelectorAll( '.jsDemoGridMore > div' ), function ( div ) {
+    window.ScrollScout.becomesVisible( div, 100 ).then( makeRed );
+} );
+</pre></code>
+
+    <div class="jsDemoGridFast"></div>
+
+    <p class="foot"> Just a simple ( and ugly coded ) demo. But better than nothing, right?</p>
+
+    <script>
+
+        var loadMore = document.getElementById('loadMore');
+        loadMore.addEventListener('click', loadMoreCallback )
+
+        loadMoreCallback();
+
+
+        function loadMoreCallback(e) {
+            if(e) e.preventDefault();
+            injectBefore( loadMore, getRandomInt( 5, 25 ) );
+            forEach( document.querySelectorAll( '.jsDemoGridMore > div' ), function ( div ) {
+                window.ScrollScout.becomesVisible( div, 0 ).then( makeBlue );
+            } );
+        }
+
+        function makeGreen( el ) {
+            el.style.backgroundColor = 'green';
+        }
+
+        function makeBlue( el ) {
+            el.style.backgroundColor = 'lightseagreen';
+        }
+
+        function makeRed( el ) {
+        el.style.backgroundColor = 'lightcoral';
+    }
+
+
+    injectElements( document.querySelector( '.jsDemoGrid' ), 150 );
+    forEach( document.querySelectorAll( '.jsDemoGrid > div' ), function ( div ) {
+        window.ScrollScout.becomesVisible( div, 0 ).then( makeGreen );
+    } );
+
+    injectElements( document.querySelector( '.jsDemoGridFast' ), 350 );
+    forEach( document.querySelectorAll( '.jsDemoGridFast > div' ), function ( div ) {
+        window.ScrollScout.becomesVisible( div, 100 ).then( makeRed );
+    } );
+
+
+
+        function injectElements( container, count ) {
+            var itemWidth;
+            for( var i = 0; i <= count; i++) {
+                itemWidth = ( getRandomInt( 1, 5 ) * 20 ) + 'px';
+                container.insertAdjacentHTML(
+                    'afterbegin',
+                    '<div class="demoGridItem" style="width:'+itemWidth+';"></div>'
+                );
+            }
+        }
+
+        function injectBefore( el, count ) {
+            for( var i = 0; i <= count; i++) {
+                el.insertAdjacentHTML(
+                    'beforebegin',
+                    '<div class="demoGridItem"></div>'
+                );
+            }
+        }
+
+
+
+        window.ScrollScout.setOnEvent(function() {
+        console.log('checking');
+    });
+
+
+    function forEach( array, callback, scope ) {
+        for ( var i = 0; i < array.length; i++ ) {
+            callback.call( scope, array[ i ], i ); // passes back stuff we need
+        }
+    }
+
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+
+</script>
+</div>
+</body>
+</html>
+
+
+
+

@@ -2,3 +2,7 @@ cjs
 es
 dist
 coverage
+
+src/example.js
+src/featureDetection.js
+src/preload.js
