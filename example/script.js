@@ -1,0 +1,1 @@
+const scrollScout = require(`../`);
