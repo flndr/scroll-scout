@@ -33,6 +33,11 @@ export const ScrollScout = new ( () => {
     }
     
     function isInViewport( element, threshold = 50 ) {
+        
+        if( !isVisible( element ) ) {
+            return false;
+        }
+        
         const viewTop = windowScrollY;
         const viewBot = viewTop + windowHeight;
         
@@ -97,5 +102,10 @@ export const ScrollScout = new ( () => {
         if ( Object.keys( watchList ).length === 0 ) {
             scout( false );
         }
+    }
+    
+    function isVisible( someElement ) {
+        // see https://davidwalsh.name/offsetheight-visibility
+        return someElement.offsetHeight > 0;
     }
 });

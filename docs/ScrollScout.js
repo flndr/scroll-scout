@@ -220,6 +220,11 @@ var ScrollScout$1 = new function () {
     function isInViewport(element) {
         var threshold = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 50;
 
+
+        if (!isVisible(element)) {
+            return false;
+        }
+
         var viewTop = windowScrollY;
         var viewBot = viewTop + windowHeight;
 
@@ -288,6 +293,11 @@ var ScrollScout$1 = new function () {
         if (Object.keys(watchList).length === 0) {
             scout(false);
         }
+    }
+
+    function isVisible(someElement) {
+        // see https://davidwalsh.name/offsetheight-visibility
+        return someElement.offsetHeight > 0;
     }
 }();
 
