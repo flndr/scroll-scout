@@ -199,13 +199,15 @@ var ScrollScout$1 = new function () {
 
     var events = ['scroll', 'resize'],
         eventHandler = throttle(checkElements);
+
     var eventCallback = function eventCallback() {};
     var isScouting = false;
 
     return {
         becomesVisible: becomesVisible,
         isVisible: isInViewport,
-        setOnEvent: setOnEvent
+        setOnEvent: setOnEvent,
+        checkElements: checkElements
     };
 
     function setOnEvent(callback) {
