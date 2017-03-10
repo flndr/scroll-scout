@@ -13,8 +13,7 @@ export const ScrollScout = new ( () => {
     const watchList  = {};
     let watchListKey = 0;
     
-    const events       = [ 'scroll', 'resize' ],
-          eventHandler = throttle( checkElements );
+    const events = [ 'scroll', 'resize' ], eventHandler = throttle( checkElements );
     
     let eventCallback = function() {
     };
