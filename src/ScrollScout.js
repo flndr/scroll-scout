@@ -10,17 +10,21 @@ export const ScrollScout = new ( () => {
     
     let windowHeight, windowScrollY;
     
-    const watchList = {};
+    const watchList  = {};
     let watchListKey = 0;
     
-    const events = [ 'scroll', 'resize' ], eventHandler = throttle( checkElements );
-    let eventCallback = function() {};
-    let isScouting = false;
+    const events       = [ 'scroll', 'resize' ],
+          eventHandler = throttle( checkElements );
+    
+    let eventCallback = function() {
+    };
+    let isScouting    = false;
     
     return {
         becomesVisible : becomesVisible,
         isVisible      : isInViewport,
-        setOnEvent     : setOnEvent
+        setOnEvent     : setOnEvent,
+        checkElements  : checkElements
     };
     
     function setOnEvent( callback ) {
@@ -48,18 +52,20 @@ export const ScrollScout = new ( () => {
         
         return ( elementBot >= viewTop - offset ) && ( elementTop <= viewBot + offset );
     }
-        
+    
     function becomesVisible( el, threshold = 50 ) {
         return new Promise( resolve => {
             updateWindowParams();
-            if ( isInViewport( el, threshold ) ) {
+            if( isInViewport( el, threshold ) ) {
                 resolve( el );
             } else {
-                addToWatchlist({
-                    element   : el,
-                    threshold : threshold,
-                    resolve   : resolve
-                });
+                addToWatchlist(
+                    {
+                        element   : el,
+                        threshold : threshold,
+                        resolve   : resolve
+                    }
+                );
                 scout( true );
             }
         } );
@@ -73,10 +79,10 @@ export const ScrollScout = new ( () => {
     function scout( on ) {
         let action;
         if( on ) {
-            action = isScouting ? false : 'addEventListener';
+            action     = isScouting ? false : 'addEventListener';
             isScouting = true;
         } else {
-            action = 'removeEventListener';
+            action     = 'removeEventListener';
             isScouting = false;
         }
         if( action ) {
@@ -93,13 +99,13 @@ export const ScrollScout = new ( () => {
         updateWindowParams();
         
         Object.keys( watchList ).forEach( key => {
-            if ( isInViewport( watchList[ key ].element, watchList[ key ].threshold ) ) {
+            if( isInViewport( watchList[ key ].element, watchList[ key ].threshold ) ) {
                 watchList[ key ].resolve( watchList[ key ].element );
                 delete watchList[ key ];
             }
         } );
         
-        if ( Object.keys( watchList ).length === 0 ) {
+        if( Object.keys( watchList ).length === 0 ) {
             scout( false );
         }
     }
